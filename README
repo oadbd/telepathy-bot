@@ -1,0 +1,16 @@
+A simple interface for writing bots using Telepathy
+
+Current status: Vaporware
+
+There are plenty of libraries for writing bots for specific protocols, 
+but making use of telepathy provides easy support for a large number
+of different protocols. 
+
+Specifically, I'm trying to use the link-local xmpp protocol, which
+should hopefully make it easy to write bots that can work for a small
+team of co-located developers who already make use of empathy to
+communicate. There will be no need to start and manage a jabber server. 
+This is also handy within larger companies already making use of some
+sort of chat protocol. Instead of having IT create a bunch of different
+accounts for bots across various teams, each team can instead use their
+own local bot.
