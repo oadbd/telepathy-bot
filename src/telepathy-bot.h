@@ -5,11 +5,11 @@
 
 typedef struct _BotRefs 
 {
-	TpAccount *account;
-	TpAccountManager *account_manager;
-	TpConnection *connection;
-	
-	GMainLoop *loop;
+  TpAccount *account;
+  TpAccountManager *account_manager;
+  TpConnection *connection;
+  //  TpDBusDaemon *dbus;
+  GMainLoop *loop;
 } BotRefs;
 
 #endif
