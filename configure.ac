@@ -12,6 +12,7 @@ AM_INIT_AUTOMAKE(telepathy-bot, 0.1)
 
 
 TELEPATHY_GLIB_REQUIRED=0.18.0
+GLIB_REQUIRED=2.32.0
 
 # Checks for programs.
 AC_PROG_CC
@@ -21,6 +22,7 @@ LT_INIT
 
 PKG_CHECK_MODULES(TELEPATHY_BOT, 
 [
+  glib-2.0 >= $GLIB_REQUIRED
 	telepathy-glib >= $TELEPATHY_GLIB_REQUIRED
 ])
 # Checks for libraries.
