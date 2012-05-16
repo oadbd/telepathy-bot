@@ -44,7 +44,13 @@ echo_message (TpTextChannel *channel,
     g_print("pending '%s' %s\n", text, comment);
   else 
     g_print("received '%s' %s\n", text, comment);
+  
+  up = g_ascii_strup(text, -1);
+  g_print("send: %s\n", up);
 
+  reply = tp_client_message_new_text(TP_CHANNEL_TEXT_MESSAGE_TYPE_NORMAL, up);
+  tp_text_channel_send_message_async(channel, reply, 0, NULL, NULL);
+  
   g_free(text);
   g_free(up);
   g_object_unref(reply);
@@ -104,6 +110,7 @@ handle_channels_cb (TpSimpleHandler *self,
 	  g_print("Handling text channel with %s\n", 
 		  tp_channel_get_identifier(channel));
 
+
 	  g_signal_connect(channel, "message-received",
 			   G_CALLBACK(message_received_cb), NULL);
       
@@ -114,6 +121,40 @@ handle_channels_cb (TpSimpleHandler *self,
 }
 
 static void
+accept_with_cb(GObject *source,
+	       GAsyncResult *result,
+	       gpointer user_data)
+{
+  TpChannelDispatchOperation *cdo = TP_CHANNEL_DISPATCH_OPERATION (source);
+  GError *error;
+  if (!tp_channel_dispatch_operation_handle_with_finish (cdo, result, &error))
+    {
+      g_print ("AcceptWith() failed: %s\n", error->message);
+      g_error_free (error);
+      return;
+    }
+  
+  g_print ("AcceptWith() succeeded\n");
+}
+
+static void
+add_dispatch_operation_cb(TpSimpleApprover *self,
+			  TpAccount *account,
+			  TpConnection *connection,
+			  GList *channels,
+			  TpChannelDispatchOperation *cdo,
+			  TpAddDispatchOperationContext *context,
+			  gpointer user_data)
+{
+  g_print("Approving batch of channels\n");
+
+  //  tp_add_dispatch_operation_context_accept(context);
+  //  tp_channel_dispatch_operation_handle_with_async(cdo, NULL, NULL, NULL);
+}
+			  
+
+
+static void
 account_online_cb (GObject *object,
 		   GAsyncResult *res,
 		   gpointer user_data)
@@ -121,6 +162,10 @@ account_online_cb (GObject *object,
   TpAccount *account = (TpAccount *) object;
   BotRefs *bot = user_data;  
   GError *error = NULL;
+
+  TpBaseClient *handler;
+  TpBaseClient *approver;
+  TpAutomaticClientFactory *factory;
 
 
   if (!tp_account_request_presence_finish (account, res, &error))
@@ -133,21 +178,10 @@ account_online_cb (GObject *object,
   
   g_print("ACCOUNT ONLINE\n");
   
-							 
-}
 
-static void
-connect_account (TpAccount *account, 
-		 BotRefs *bot)
-{
-  TpBaseClient *handler;
-  TpAutomaticClientFactory *factory;
-  GError *error = NULL;
 
-  //factory = tp_automatic_client_factory_new(dbus);
-  //handler = tp_simple_handler_with_new_factory(factory,
   handler = tp_simple_handler_new_with_am(bot->account_manager, 
-      TRUE, TRUE,
+      FALSE, FALSE,
       "BotHandler", FALSE, 
       handle_channels_cb,
       bot, NULL);
@@ -156,7 +190,7 @@ connect_account (TpAccount *account,
       tp_asv_new (
 		  TP_PROP_CHANNEL_CHANNEL_TYPE, G_TYPE_STRING, TP_IFACE_CHANNEL_TYPE_TEXT,
 		  TP_PROP_CHANNEL_TARGET_HANDLE_TYPE, G_TYPE_UINT, TP_HANDLE_TYPE_CONTACT,
-		  TP_PROP_CHANNEL_REQUESTED, G_TYPE_BOOLEAN, TRUE,
+		  TP_PROP_CHANNEL_REQUESTED, G_TYPE_BOOLEAN, FALSE,
 		  NULL)
       );
   
@@ -168,7 +202,44 @@ connect_account (TpAccount *account,
       shutdown(bot);
       return;
     }
+
+  /*  
+  approver = tp_simple_approver_new_with_am(bot->account_manager,
+      "BotApprover", 
+      FALSE,
+      add_dispatch_operation_cb,
+      bot,
+      NULL);    
+
+  tp_base_client_take_approver_filter(approver, 
+     tp_asv_new (
+		 TP_PROP_CHANNEL_CHANNEL_TYPE, G_TYPE_STRING, TP_IFACE_CHANNEL_TYPE_TEXT,
+		 TP_PROP_CHANNEL_TARGET_HANDLE_TYPE, G_TYPE_UINT, TP_HANDLE_TYPE_CONTACT,
+		 TP_PROP_CHANNEL_REQUESTED, G_TYPE_BOOLEAN, FALSE,
+		 NULL)
+     );
+
+  if (!tp_base_client_register(approver, &error))
+    {
+      g_warning("Failed to register Approver: %s\n", error->message);
+      g_error_free(error);
+      shutdown(bot);
+      return;
+    }
+  */  
+
+
   g_print("Waiting for channels\n");
+  return;
+}
+
+static void
+connect_account (TpAccount *account, 
+		 BotRefs *bot)
+{
+
+  //factory = tp_automatic_client_factory_new(dbus);
+  //handler = tp_simple_handler_with_new_factory(factory,
 
   g_print("In connect account.\n");
   tp_account_request_presence_async(account,
