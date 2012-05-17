@@ -1,8 +1,7 @@
 #ifndef __TP_BOT_ACCOUNT_H__
 #define __TP_BOT_ACCOUNT_H__
 
-#include <glib-object.h>
-#include <telepathy-glib/telepathy-glib.h>
+#include "telepathy-bot.h"
 
 #define TP_BOT_TYPE_ACCOUNT             (tp_bot_account_get_type ())
 #define TP_BOT_ACCOUNT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), TP_BOT_TYPE_ACCOUNT, TpBotAccount))
@@ -17,6 +16,11 @@ typedef struct _TpBotAccountClass   TpBotAccountClass;
 struct _TpBotAccount
 {
 	GObject parent_instance;
+    gchar *type;
+
+    guint ready_signal_id;
+	guint failure_signal_id;
+	
 	gpointer *bot;
 	  
 	TpAccount *account;
@@ -31,5 +35,7 @@ struct _TpBotAccountClass
 
 /* used by TP_BOT_TYPE_ACCOUNT */
 GType tp_bot_account_get_type (void);
+
+void tp_bot_account_spin_up (TpBotAccount*);
 
 #endif

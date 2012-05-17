@@ -15,18 +15,23 @@ typedef struct _TpBotHandlerClass   TpBotHandlerClass;
 
 struct _TpBotHandler
 {
-  GObject parent_instance;
-  gpointer *bot;
+    GObject parent_instance;
+    
+    guint ready_signal_id;
+	guint failure_signal_id;
+	
+    gpointer *bot;
 
-  TpBaseClient *handler;
+    TpBaseClient *handler;
 };
 
 struct _TpBotHandlerClass
 {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 };
 
 /* used by TP_BOT_TYPE_HANDLER */
 GType tp_bot_handler_get_type (void);
 
+void tp_bot_handler_spin_up (TpBotHandler *self, TpAccountManager *manager);
 #endif

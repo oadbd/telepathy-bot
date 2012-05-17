@@ -28,4 +28,6 @@ struct _TpBotSignalHandlerClass
 GType tp_bot_signal_handler_get_type (void);
 
 
+void tp_bot_signal_handler_setup(TpBotSignalHandler *self);
+
 #endif

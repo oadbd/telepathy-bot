@@ -6,6 +6,11 @@
 #include <glib.h>
 #include <telepathy-glib/telepathy-glib.h>
 
+
+#define FAIL(self, details) do { g_print("Fail: %s\n", details); \
+                                 g_signal_emit(self, self->failure_signal_id, NULL); \
+                                 return; } while (0)
+
 #include "tp_bot-config.h"
 #include "tp_bot-signal_handler.h"
 #include "tp_bot-account.h"

@@ -15,13 +15,17 @@ typedef struct _TpBotBotClass   TpBotBotClass;
 
 struct _TpBotBot
 {
-  GObject parent_instance;
-
-  TpBotConfig *config;
-  TpBotAccount *account;
-  TpBotHandler *handler;
-  TpBotSocket *socket;
-  TpBotSignalHandler *signal_handler;
+    GObject parent_instance;
+    
+    gchar *type;
+    
+    TpBotConfig *config;
+    TpBotAccount *account;
+    TpBotHandler *handler;
+    TpBotSocket *socket;
+    TpBotSignalHandler *signal_handler;
+  
+    GMainLoop *main_loop;
 };
 
 struct _TpBotBotClass
@@ -32,5 +36,6 @@ struct _TpBotBotClass
 /* used by TP_BOT_TYPE_BOT */
 GType tp_bot_bot_get_type (void);
 
+void tp_bot_bot_run (TpBotBot *bot);
 
 #endif
