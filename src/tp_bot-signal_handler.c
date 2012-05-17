@@ -8,6 +8,7 @@ tp_bot_signal_handler_class_init(TpBotSignalHandlerClass *self)
 
 }
 
+static void
 tp_bot_signal_handler_init(TpBotSignalHandler *self)
 {
 

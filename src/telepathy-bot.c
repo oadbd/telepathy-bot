@@ -1,4 +1,3 @@
-#include "config.h"
 #include "telepathy-bot.h"
 
 int

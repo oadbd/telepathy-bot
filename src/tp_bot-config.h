@@ -1,7 +1,6 @@
 #ifndef __TP_BOT_CONFIG_H__
 #define __TP_BOT_CONFIG_H__
 
-#include <glib-object.h>
 #include "telepathy-bot.h"
 
 #define TP_BOT_TYPE_CONFIG             (tp_bot_account_get_type ())
@@ -27,10 +26,5 @@ struct _TpBotConfigClass
 
 /* used by TP_BOT_TYPE_CONFIG */
 GType tp_bot_config_get_type (void);
-
-/*
- * Method definitions.
- */
-
 
 #endif

@@ -1,7 +1,6 @@
 #ifndef __TP_BOT_BOT_H__
 #define __TP_BOT_BOT_H__
 
-#include <glib-object.h>
 #include "telepathy-bot.h"
 
 #define TP_BOT_TYPE_BOT             (tp_bot_bot_get_type ())
@@ -33,8 +32,5 @@ struct _TpBotBotClass
 /* used by TP_BOT_TYPE_BOT */
 GType tp_bot_bot_get_type (void);
 
-/*
- * Method definitions.
- */
 
 #endif

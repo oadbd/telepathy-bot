@@ -1,7 +1,6 @@
 #ifndef __TP_BOT_SIGNAL_HANDLER_H__
 #define __TP_BOT_SIGNAL_HANDLER_H__
 
-#include <glib-object.h>
 #include "telepathy-bot.h"
 
 #define TP_BOT_TYPE_SIGNAL_HANDLER             (tp_bot_account_get_type ())
@@ -27,10 +26,6 @@ struct _TpBotSignalHandlerClass
 
 /* used by TP_BOT_TYPE_SIGNAL_HANDLER */
 GType tp_bot_signal_handler_get_type (void);
-
-/*
- * Method definitions.
- */
 
 
 #endif
