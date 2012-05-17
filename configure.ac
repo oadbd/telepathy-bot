@@ -5,8 +5,9 @@ AC_PREREQ([2.68])
 AC_INIT([telepathy-bot], [0.1], [oadbd@forkoff.org])
 
 AC_CONFIG_AUX_DIR(config)
-AC_CONFIG_SRCDIR([src/telepathy-bot.c])
+AC_CONFIG_SRCDIR([src/])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE(telepathy-bot, 0.1)
 

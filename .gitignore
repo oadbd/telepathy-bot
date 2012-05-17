@@ -11,3 +11,4 @@ src/Makefile.in
 /compile
 /configure
 /build
+*~
